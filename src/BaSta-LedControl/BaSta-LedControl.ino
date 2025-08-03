@@ -11,10 +11,11 @@ const int ReceiverEnablePin = 5;
 const int DriverEnablePin = 6;
 const int DriverInputPin = 7;
 const unsigned long FlashDuration = 3000;
+const unsigned long FlashDelay = 0;
 const int Baudrate = 19200;
 
-BasketballLedControl gameClockLight(RedLedOutputPin, FlashDuration);
-BasketballLedControl shotClockLight(YellowLedOutputPin, FlashDuration);
+BasketballLedControl gameClockLight(RedLedOutputPin, FlashDuration, FlashDelay);
+BasketballLedControl shotClockLight(YellowLedOutputPin, FlashDuration, FlashDelay);
 SoftwareSerial serialInput(ReceiverOutputPin, DriverInputPin);
 StramatelProtocolParser protocolParser;
 
@@ -29,20 +30,24 @@ void setup()
   // Configure serial receive (through SerialInput)
   serialInput.begin(Baudrate);
 
+  // Configure serial send (through RX/TX)
   Serial.begin(Baudrate);
 
-  gameClockLight.setState(true);
-  shotClockLight.setState(false);
+  // Delay further execution to ensure that millis() doesn't return 0 as reference
+  delay(10);
+
+  gameClockLight.setState(true, true);
+  shotClockLight.setState(false, true);
   
-  delay(2000);
+  delay(FlashDuration);
   
-  gameClockLight.setState(false);
-  shotClockLight.setState(true);
+  gameClockLight.setState(false, true);
+  shotClockLight.setState(true, true);
   
-  delay(2000);
-  
-  gameClockLight.setState(false);
-  shotClockLight.setState(false);
+  delay(FlashDuration);
+
+  gameClockLight.setState(false, true);
+  shotClockLight.setState(false, true);
 }
 
 Troolean gameClockZeroState(unknown);
@@ -74,9 +79,9 @@ void loop()
   }
 
   // CONTROL
-  // Check whether a timeout to disable the light has been exceeded
-  gameClockLight.checkTimeout();
-  shotClockLight.checkTimeout();
+  // Check whether a delay to enable or timeout to disable the light has been exceeded
+  gameClockLight.updateState();
+  shotClockLight.updateState();
 
   // Check shot clock first since it's state may be overridden by the game clock
   

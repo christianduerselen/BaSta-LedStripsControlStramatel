@@ -1,12 +1,13 @@
 #include "BasketballLedControl.h"
 
-BasketballLedControl::BasketballLedControl(int controlPin, long timeout)
+BasketballLedControl::BasketballLedControl(int controlPin, long timeout, long delay)
 {
 	_pin = controlPin;
   _timeout = timeout;
+  _delay = delay;
 
   pinMode(_pin, OUTPUT);
-  setState(false);
+  applyState();
 };
 
 bool BasketballLedControl::getState()
@@ -14,16 +15,34 @@ bool BasketballLedControl::getState()
   return _state;
 }
 
-void BasketballLedControl::setState(bool state)
+void BasketballLedControl::setState(bool state, bool force)
 {
   _state = state;
-  digitalWrite(_pin, _state ? LOW : HIGH);
-  _stamp = _state ? millis() : 0;
+  _startStamp = millis() + (force ? 0 : _delay);
+  _stopStamp = _state ? _startStamp + _timeout : 0;
+
+  updateState();
 }
 
-void BasketballLedControl::checkTimeout()
+void BasketballLedControl::updateState()
 {
-  // If the LED was active for the designated time, disable it
-  if (_stamp != 0 && millis() - _stamp >= _timeout)
-    setState(false);
+  long currentStamp = millis();
+
+  if (_startStamp != 0 && currentStamp >= _startStamp)
+  {
+    _startStamp = 0;
+    applyState();
+  }
+
+  if (_stopStamp != 0 && currentStamp >= _stopStamp)
+  {
+    _stopStamp = 0;
+    _state = false;
+    applyState();
+  }
+}
+
+void BasketballLedControl::applyState()
+{
+  digitalWrite(_pin, _state ? LOW : HIGH);
 }
