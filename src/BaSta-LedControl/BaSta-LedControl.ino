@@ -4,29 +4,25 @@
 #include "BasketballLedControl.h"
 #include "StramatelProtocolParser.h"
 
-const int YellowLedOutputPin = 2;
-const int RedLedOutputPin = 3;
-const int ReceiverOutputPin = 4;
-const int ReceiverEnablePin = 5;
-const int DriverEnablePin = 6;
-const int DriverInputPin = 7;
+const int RS485RxPin = 2;
+const int RS485TxPin = 3;
+const int ReceiverEnablePin = 6;
+
 const unsigned long FlashDuration = 3000;
 const unsigned long FlashDelay = 0;
+
 const int Baudrate = 19200;
 
-BasketballLedControl gameClockLight(RedLedOutputPin, FlashDuration, FlashDelay);
-BasketballLedControl shotClockLight(YellowLedOutputPin, FlashDuration, FlashDelay);
-SoftwareSerial serialInput(ReceiverOutputPin, DriverInputPin);
+const int Relay1Pin = 4;
+const int Relay2Pin = 7;
+
+BasketballLedControl gameClockLight(Relay1Pin, FlashDuration, FlashDelay);
+BasketballLedControl shotClockLight(Relay2Pin, FlashDuration, FlashDelay);
+SoftwareSerial serialInput(RS485RxPin, RS485TxPin);
 StramatelProtocolParser protocolParser;
 
 void setup()
 {
-  // Configure the MAX485 DE & RE GPIO pins as LOW to only enable receiving
-  pinMode(ReceiverEnablePin, OUTPUT);
-  digitalWrite(ReceiverEnablePin, LOW);
-  pinMode(DriverEnablePin, OUTPUT);
-  digitalWrite(DriverEnablePin, LOW);
-
   // Configure serial receive (through SerialInput)
   serialInput.begin(Baudrate);
 

@@ -44,5 +44,5 @@ void BasketballLedControl::updateState()
 
 void BasketballLedControl::applyState()
 {
-  digitalWrite(_pin, _state ? LOW : HIGH);
+  digitalWrite(_pin, _state ? HIGH : LOW);
 }
