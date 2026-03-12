@@ -1,6 +1,6 @@
-#include "BasketballLedControl.h"
+#include "BasketballLedStripsControl.h"
 
-BasketballLedControl::BasketballLedControl(int controlPin, long timeout, long delay)
+BasketballLedStripsControl::BasketballLedStripsControl(int controlPin, long timeout, long delay)
 {
 	_pin = controlPin;
   _timeout = timeout;
@@ -10,12 +10,12 @@ BasketballLedControl::BasketballLedControl(int controlPin, long timeout, long de
   applyState();
 };
 
-bool BasketballLedControl::getState()
+bool BasketballLedStripsControl::getState()
 {
   return _state;
 }
 
-void BasketballLedControl::setState(bool state, bool force)
+void BasketballLedStripsControl::setState(bool state, bool force)
 {
   _state = state;
   _startStamp = millis() + (force ? 0 : _delay);
@@ -24,7 +24,7 @@ void BasketballLedControl::setState(bool state, bool force)
   updateState();
 }
 
-void BasketballLedControl::updateState()
+void BasketballLedStripsControl::updateState()
 {
   long currentStamp = millis();
 
@@ -42,7 +42,7 @@ void BasketballLedControl::updateState()
   }
 }
 
-void BasketballLedControl::applyState()
+void BasketballLedStripsControl::applyState()
 {
   digitalWrite(_pin, _state ? HIGH : LOW);
 }

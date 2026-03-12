@@ -1,12 +1,12 @@
-#ifndef BasketballLedControl_h
-#define BasketballLedControl_h
+#ifndef BasketballLedStripsControl_h
+#define BasketballLedStripsControl_h
 
 #include "Arduino.h"
 
-class BasketballLedControl
+class BasketballLedStripsControl
 {
   public:
-    BasketballLedControl(int controlPin, long timeout, long delay);
+    BasketballLedStripsControl(int controlPin, long timeout, long delay);
     bool getState();
     void setState(bool state, bool force = false);
     void updateState();

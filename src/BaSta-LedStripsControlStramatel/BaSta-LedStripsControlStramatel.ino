@@ -1,7 +1,7 @@
 #include "SoftwareSerial.h"
 #include "Troolean.h"
 
-#include "BasketballLedControl.h"
+#include "BasketballLedStripsControl.h"
 #include "StramatelProtocolParser.h"
 
 const int RS485RxPin = 2;
@@ -16,8 +16,8 @@ const int Baudrate = 19200;
 const int Relay1Pin = 4;
 const int Relay2Pin = 7;
 
-BasketballLedControl gameClockLight(Relay1Pin, FlashDuration, FlashDelay);
-BasketballLedControl shotClockLight(Relay2Pin, FlashDuration, FlashDelay);
+BasketballLedStripsControl gameClockLight(Relay1Pin, FlashDuration, FlashDelay);
+BasketballLedStripsControl shotClockLight(Relay2Pin, FlashDuration, FlashDelay);
 SoftwareSerial serialInput(RS485RxPin, RS485TxPin);
 StramatelProtocolParser protocolParser;
 
