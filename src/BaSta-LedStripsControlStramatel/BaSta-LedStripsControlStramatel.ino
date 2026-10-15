@@ -9,7 +9,7 @@ const int RS485TxPin = 3;
 const int ReceiverEnablePin = 6;
 
 const unsigned long FlashDuration = 3000;
-const unsigned long FlashDelay = 150;
+const unsigned long FlashDelay = 50;
 
 const int Baudrate = 19200;
 
